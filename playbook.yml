@@ -1,0 +1,36 @@
+---
+- hosts: app
+  become: true
+  tasks:
+    - name: asegurarse que la llave del repositorio de docker está instalada
+      apt_key:
+        id: "58118E89F3A912897C070ADBF76221572C52609D"
+        keyserver: "hkp://p80.pool.sks-keyservers.net:80"
+        state: present
+
+    - name: asegurarse que el repositorio de docker esté disponible en el SO
+      # Para Ubuntu 14.04 LTS, usar este repositorio:
+      apt_repository: 
+        repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main 
+        state: present
+        update_cache: yes
+  # Instalar Docker
+    - name: instalar Docker
+      apt: 
+        name: docker-engine
+        state: present      
+  # Instalar Docker-compose  
+    - name: instalar docker-compose
+      pip: 
+        name=docker-compose 
+        state=present
+  # Iniciar Servicio de Docker
+    - name: iniciar Docker
+      service: 
+        name=docker 
+        state=restarted
+    #- name: ejecutar conenedores docker usando el directorio de un proyecto
+    - docker_service:
+        project_src: compose
+        state: present
+      register: output
