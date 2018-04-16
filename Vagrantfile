@@ -9,15 +9,19 @@ Vagrant.configure("2") do |config|
     app.vm.box = "ubuntu/trusty64" # Usar template para Ubuntu 14.04 descargado del catálogo de Vagrant
     app.vm.box_version = "20180404.0.0" # Version del template de Ubuntu
     app.vm.network "private_network", ip: "192.168.10.11" # Setear IP privada
-    app.vm.network :forwarded_port, guest: 80, host: 8080 ## Port Forwarding desde la VM (80) al localhost (8080)
+    #app.vm.network :forwarded_port, guest: 80, host: 8080 ## Port Forwarding desde la VM (80) al localhost (8080)
     app.vm.provision "shell", inline: <<-SHELL # Instalar pip y usar comandos integrados de shell contra la VM
       sudo apt-get -y install python-pip
       sudo pip install --ignore-installed six
+      echo -e "\n\n\n" | ssh-keygen -t rsa -N "" # Generar par de keys para SSH sin interacción
+      cat ~/.ssh/id_rsa.pub # Key SSH para usar con repo local GitLab
     SHELL
     app.vm.provision "ansible_local" do |ansible| # Usar Ansible como un aprovisionador local
         ansible.playbook = "playbook.yml" # Ruta al Ansible-playbook para instalar Docker
         #ansible.install_mode = "pip" # Opcional: instalar Ansible en la VM usando pip
         #ansible.version = "2.5.0"  # Opcional: elegir version específica de Ansible a instalar
+    # added rsync__auto  to enable detect changes on host and sync to guest machine and exclude .git/
+    app.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__auto: true
     end
   end
 
@@ -45,8 +49,15 @@ edition = ENV['GITLAB_EDITION'] || "community"
 
     # use rsync for synced folder to avoid the need for provider tools
 	# added rsync__auto  to enable detect changes on host and sync to guest machine and exclude .git/
-    gitlab.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__auto: true
-
+  #  gitlab.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__auto: true
+    gitlab.vm.provision "shell", inline: <<-SHELL # Instalar RUNNER en la VM de GitLab para ejecutar los pipeline
+      sudo apt-get -y update
+      sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+      sudo chmod +x /usr/local/bin/gitlab-runner
+      sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+      sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
+      sudo gitlab-runner start
+    SHELL
   # GitLab recommended specs
     gitlab.vm.provider "virtualbox" do |v|
       v.cpus = cpus
