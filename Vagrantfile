@@ -11,11 +11,11 @@ Vagrant.configure("2") do |config|
     app.vm.network "private_network", ip: "192.168.10.11" # Setear IP privada
     #app.vm.network :forwarded_port, guest: 80, host: 8080 ## Port Forwarding desde la VM (80) al localhost (8080)
     app.vm.provision "shell", inline: <<-SHELL # Instalar pip y usar comandos integrados de shell contra la VM
-      echo -e "\n\n\n" | ssh-keygen -t rsa -N "" # Generar par de keys para SSH sin interacción
-      cat ~/.ssh/id_rsa.pub # Key SSH para usar con repo local GitLab
+      #echo -e "\n\n\n" | ssh-keygen -t rsa -N "" # Generar par de keys para SSH sin interacción
+      #cat ~/.ssh/id_rsa.pub > /tmp/public_key # Key SSH para usar con repo local GitLab
       sudo apt-get -y install python-pip
       sudo pip install --ignore-installed six
-      sudo apt-get update -qq && apt-get install -y -qq sshpass
+      sudo apt-get update -qq && apt-get install -y -qq sshpass # Instalar sshpass para usar secret variable
     SHELL
     app.vm.provision "ansible_local" do |ansible| # Usar Ansible como un aprovisionador local
         ansible.playbook = "playbook.yml" # Ruta al Ansible-playbook para instalar Docker
@@ -58,7 +58,7 @@ edition = ENV['GITLAB_EDITION'] || "community"
       sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
       sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
       sudo gitlab-runner start
-      sudo apt-get update -qq && apt-get install -y -qq sshpass
+      sudo apt-get update -qq && apt-get install -y -qq sshpass # Instalar sshpass para usar secret variable
     SHELL
   # GitLab recommended specs
     gitlab.vm.provider "virtualbox" do |v|
