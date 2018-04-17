@@ -1,0 +1,9 @@
+job1:
+  script:
+    - sh ./tar.sh
+job2:
+  script:
+    - sh ./scp.sh
+job3:
+  script:
+    - sh ./run-playbook.sh
