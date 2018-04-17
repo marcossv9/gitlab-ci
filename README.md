@@ -21,25 +21,24 @@ Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con
 
 **Pasos A VM app**
 
-1- ingresar por ssh con usuario vagrant a la vm usando el comando vagrant ssh app
-2- generar par de llaves con el comando: 
-echo -e "\n\n\n" | ssh-keygen -t rsa -N ""
-3- copiar llave publica de la salida del comando:
-cat ~/.ssh/id_rsa.pub
+1. Ingresar por ssh con usuario vagrant a la vm usando el comando ```# vagrant ssh app```
+2. Generar par de llaves con el comando: 
+```# echo -e "\n\n\n" | ssh-keygen -t rsa -N ""```
+3. Copiar llave publica de la salida del comando:
+```# cat ~/.ssh/id_rsa.pub```
 
 **Pasos A VM gitlab**
 
-1- ingresar a la consola web de gitlab
-2- cambiar password de root (gitlab18)
-3- loguearse como root
-4- crear grupo (devops-challenge)
-5- crear proyecto (test-ci)
-6- agregar del user vagrant la llave publica de la vm app al proyecto creado en SSH Keys de GitLab
-7- Ingresar al server gitlab por ssh con usuario vagrant utilizando el comando vagrant ssh gitlab
-8- Registar Runner
-
-8.1- Ejecutar ¨sudo gitlab-runner register¨
-  Rellenar los datos en este orden:
+1. Ingresar a la consola web de gitlab
+2. Cambiar password de root (gitlab18)
+3. Loguearse como root
+4. Crear grupo (devops-challenge)
+5. Crear proyecto (test-ci)
+6. Agregar del user vagrant la llave publica de la vm app al proyecto creado en SSH Keys de GitLab
+7. Ingresar al server gitlab por ssh con usuario vagrant utilizando el comando vagrant ssh gitlab
+8. Registar Runner:
+- Ejecutar ```# sudo gitlab-runner register```
+- Rellenar los datos en este orden:
 - Please enter the gitlab-ci coordinator URL:
   https://gitlab
 - Please enter the gitlab-ci token for this runner:
@@ -54,21 +53,21 @@ cat ~/.ssh/id_rsa.pub
 - Please enter the executor: docker, docker-ssh, virtualbox, docker+machine, parallels, shell, ssh, docker-ssh+machine, kubernetes:
   shell
 
-9- setear variable secreta de la manera que se informa en el siguiente link para el usuario vagrant: https://codeburst.io/gitlab-build-and-push-to-a-server-via-ssh-6d27ca1bf7b4
+9. setear variable secreta de la manera que se informa en el siguiente link para el usuario vagrant: https://codeburst.io/gitlab-build-and-push-to-a-server-via-ssh-6d27ca1bf7b4
 
 NOTA: Usuario ¨vagrant¨, Password: ¨vagrant¨ | variable secreta: USER_PASS, valor: vagrant
 
 **Pasos B VM app**
 
-1- Ingresar por SSH con el comando ¨vagrant ssh app¨ al server app y ejecutar los siguientes comandos desde el directorio /vagrant:
+1. Ingresar por SSH con el comando ¨vagrant ssh app¨ al server app y ejecutar los siguientes comandos desde el directorio /vagrant:
 
-* git config --global user.name "Administrator"
-* git config --global user.email "admin@example.com"
-* git init
-* git remote add origin git@192.168.10.10:devops-challenge/test-ci.git
-* git add .
-* git commit -m "Initial commit"
-* echo -e "yes\n" | git push -u origin master
+* ```# git config --global user.name "Administrator"```
+* ```# git config --global user.email "admin@example.com"```
+* ```# git init```
+* ```# git remote add origin git@192.168.10.10:devops-challenge/test-ci.git```
+* ```# git add .```
+* ```# git commit -m "Initial commit"```
+* ```# echo -e "yes\n" | git push -u origin master```
 * Ingresar yes para aceptar la llave de ssh
 
 NOTA: Luego de lo anterior se ejecutará un pipeline con lo solicitado en el challenge
