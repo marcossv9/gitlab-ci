@@ -34,8 +34,8 @@ Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con
 3. Loguearse como root
 4. Crear grupo (devops-challenge)
 5. Crear proyecto (test-ci)
-6. Agregar del user vagrant la llave publica de la vm app al proyecto creado en SSH Keys de GitLab
-7. Ingresar al server gitlab por ssh con usuario vagrant utilizando el comando vagrant ssh gitlab
+6. Agregar del la llave pública copiada anteriormente de la VM app, al proyecto creado, en la sección SSH Keys de GitLab
+7. Ingresar al server gitlab por ssh con usuario vagrant utilizando el comando ```# vagrant ssh gitlab```
 8. Registar Runner:
 - Ejecutar ```# sudo gitlab-runner register```
 - Rellenar los datos en este orden:
