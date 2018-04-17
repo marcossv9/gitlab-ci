@@ -11,17 +11,18 @@ Vagrant.configure("2") do |config|
     app.vm.network "private_network", ip: "192.168.10.11" # Setear IP privada
     #app.vm.network :forwarded_port, guest: 80, host: 8080 ## Port Forwarding desde la VM (80) al localhost (8080)
     app.vm.provision "shell", inline: <<-SHELL # Instalar pip y usar comandos integrados de shell contra la VM
-      sudo apt-get -y install python-pip
-      sudo pip install --ignore-installed six
       echo -e "\n\n\n" | ssh-keygen -t rsa -N "" # Generar par de keys para SSH sin interacción
       cat ~/.ssh/id_rsa.pub # Key SSH para usar con repo local GitLab
+      sudo apt-get -y install python-pip
+      sudo pip install --ignore-installed six
+      sudo apt-get update -qq && apt-get install -y -qq sshpass
     SHELL
     app.vm.provision "ansible_local" do |ansible| # Usar Ansible como un aprovisionador local
         ansible.playbook = "playbook.yml" # Ruta al Ansible-playbook para instalar Docker
         #ansible.install_mode = "pip" # Opcional: instalar Ansible en la VM usando pip
         #ansible.version = "2.5.0"  # Opcional: elegir version específica de Ansible a instalar
     # added rsync__auto  to enable detect changes on host and sync to guest machine and exclude .git/
-    app.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__auto: true
+    app.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"#, rsync__auto: true
     end
   end
 
@@ -31,7 +32,7 @@ memory = ENV['GITLAB_MEMORY'] || 3072
 cpus = ENV['GITLAB_CPUS'] || 2
 port = ENV['GITLAB_PORT'] || 8443
 swap = ENV['GITLAB_SWAP'] || 0
-host = ENV['GITLAB_HOST'] || "gitlab.local"
+host = ENV['GITLAB_HOST'] || "gitlab"
 edition = ENV['GITLAB_EDITION'] || "community"
 
   config.vm.define :gitlab do |gitlab|
@@ -57,6 +58,7 @@ edition = ENV['GITLAB_EDITION'] || "community"
       sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
       sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
       sudo gitlab-runner start
+      sudo apt-get update -qq && apt-get install -y -qq sshpass
     SHELL
   # GitLab recommended specs
     gitlab.vm.provider "virtualbox" do |v|
