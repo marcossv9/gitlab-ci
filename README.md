@@ -17,7 +17,7 @@ Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con
 4. Pruebe el sitio web usando un navegador de preferencia y vaya a la siguiente URL desde su máquina Host: [http://192.168.10.10](http://192.168.10.10) 
 5. Ingrese a gitlab local accediendo a la URL:
 [https://192.168.10.11](https://192.168.10.11) 
-6. Completar los siguientes pasos en el orden indicado:
+6. Completar TODOS los siguientes pasos en el orden indicado:
 
 **Pasos A VM app**
 
@@ -40,10 +40,10 @@ cat ~/.ssh/id_rsa.pub
 
 8.1- Ejecutar ¨sudo gitlab-runner register¨
   Rellenar los datos en este orden:
-- Please enter the gitlab-ci coordinator URL
+- Please enter the gitlab-ci coordinator URL:
   https://gitlab
 - Please enter the gitlab-ci token for this runner:
-  copiar token desde gitlab web console -> Proycto -> Settings ->CI/CD -> Runner Settings
+  copiar token desde gitlab web console -> Proyecto -> Settings ->CI/CD -> Runner Settings
 - Please enter the gitlab-ci description for this runner:
   [gitlab]: new-runner
 - Please enter the gitlab-ci tags for this runner (comma separated):
@@ -62,13 +62,13 @@ NOTA: Usuario ¨vagrant¨, Password: ¨vagrant¨ | variable secreta: USER_PASS, 
 
 1- Ingresar por SSH con el comando ¨vagrant ssh app¨ al server app y ejecutar los siguientes comandos desde el directorio /vagrant:
 
-git config --global user.name "Administrator"
-git config --global user.email "admin@example.com"
-git init
-git remote add origin git@192.168.10.10:devops-challenge/test-ci.git
-git add .
-git commit -m "Initial commit"
-echo -e "yes\n" | git push -u origin master
-ingresar yes
+* git config --global user.name "Administrator"
+* git config --global user.email "admin@example.com"
+* git init
+* git remote add origin git@192.168.10.10:devops-challenge/test-ci.git
+* git add .
+* git commit -m "Initial commit"
+* echo -e "yes\n" | git push -u origin master
+* Ingresar yes para aceptar la llave de ssh
 
 NOTA: Luego de lo anterior se ejecutará un pipeline con lo solicitado en el challenge
