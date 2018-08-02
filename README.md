@@ -1,6 +1,6 @@
 # Devops-Challenge - GitlabCI
 
-Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con un gitlab local con CI funcional. El proyecto está basado en el repositorio [devops](https://github.com/marcossv9/devops-challenge/)
+Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con un gitlab local con CI funcional. El proyecto está basado en el repositorio [devops](https://github.com/marcossv9/devops/)
 
 ## Requisitos de versión de herramientas que usaremos:
 
