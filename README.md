@@ -1,4 +1,4 @@
-# Devops-Challenge - GitlabCI
+# Devops - GitlabCI
 
 Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con un gitlab local con CI funcional. El proyecto está basado en el repositorio [devops](https://github.com/marcossv9/devops/)
 
@@ -12,7 +12,7 @@ Un despliegue de dos VMs con Vagrant, una de ellas con una app web y la otra con
 ## Para poner todo en marcha y ejecutar un pipeline:
 
 1. Instalar VirtualBox & Vagrant (si no están instalado ya)
-2. Clonar el repo devops-challenge con ```# git clone https://github.com/marcossv9/gitlab-ci``` y colóquelo en el directorio desde el que desea iniciar la VM.
+2. Clonar el repo gitlab-ci con ```# git clone https://github.com/marcossv9/gitlab-ci``` y colóquelo en el directorio desde el que desea iniciar la VM.
 3. Navegar al directorio de repo local e iniciar las VMs con Vagrant usando el comando ```# vagrant up```
 4. Pruebe el sitio web usando un navegador de preferencia y vaya a la siguiente URL desde su máquina Host: [http://192.168.10.10](http://192.168.10.10) 
 5. Ingrese a gitlab local accediendo a la URL:
